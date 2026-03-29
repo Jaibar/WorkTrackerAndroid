@@ -26,9 +26,9 @@ import kotlinx.coroutines.tasks.await
 @SuppressLint("MissingPermission")
 @Composable
 fun MainScreen(context: Context, gpsEnabled: Boolean, monthStartDay: Int) {
-    val vm: WorkViewModel = viewModel(factory = androidx.lifecycle.viewmodel.initializer {
-        WorkViewModel(context)
-    })
+val vm: WorkViewModel = viewModel(factory = androidx.lifecycle.viewmodel.initializer {
+    WorkViewModel(context)
+})
 
     val scope = rememberCoroutineScope()
     val isWorking by vm.isWorking.collectAsState()
