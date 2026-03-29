@@ -14,30 +14,29 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.worktracker.viewmodel.WorkViewModel
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlinx.coroutines.tasks.await
 
 @SuppressLint("MissingPermission")
 @Composable
 fun MainScreen(context: Context, gpsEnabled: Boolean, monthStartDay: Int) {
-val vm: WorkViewModel = viewModel(factory = androidx.lifecycle.viewmodel.initializer {
-    WorkViewModel(context)
-})
+
+    // Manual ViewModel instance – avoids 'initializer' API issues
+    val vm = remember { WorkViewModel(context) }
 
     val scope = rememberCoroutineScope()
     val isWorking by vm.isWorking.collectAsState()
     val startTime by vm.startTime.collectAsState()
 
     val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+    val fused = remember { LocationServices.getFusedLocationProviderClient(context) }
 
     var slider by remember { mutableStateOf(0f) }
-    val fused = remember { LocationServices.getFusedLocationProviderClient(context) }
 
     Column(
         modifier = Modifier
