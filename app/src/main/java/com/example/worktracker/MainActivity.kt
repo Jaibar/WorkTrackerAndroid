@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.worktracker.ui.MainScreen
 
+@OptIn(ExperimentalMaterial3Api::class)   // required for TopAppBar/TextButton in Material3
 class MainActivity : ComponentActivity() {
     private val perm =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
