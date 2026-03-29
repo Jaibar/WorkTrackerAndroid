@@ -8,6 +8,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.worktracker.ui.MainScreen
 
@@ -37,16 +39,17 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) { padding ->
-                    if (showSettings)
-                        SettingsScreen(
-                            gpsEnabled,
-                            { gpsEnabled = it },
-                            monthStart,
-                            { monthStart = it },
-                            Modifier.padding(padding)
-                        )
-                    else
-                        MainScreen(this, gpsEnabled, monthStart)
+                    Box(Modifier.padding(padding)) {
+                        if (showSettings)
+                            SettingsScreen(
+                                gpsEnabled,
+                                { gpsEnabled = it },
+                                monthStart,
+                                { monthStart = it }
+                            )
+                        else
+                            MainScreen(this@MainActivity, gpsEnabled, monthStart)
+                    }
                 }
             }
         }
@@ -58,13 +61,12 @@ fun SettingsScreen(
     gpsEnabled: Boolean,
     onToggleGps: (Boolean) -> Unit,
     monthStart: Int,
-    onChangeDay: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    onChangeDay: (Int) -> Unit
 ) {
     var day by remember { mutableStateOf(monthStart.toString()) }
 
-    Column(modifier.padding(24.dp)) {
-        Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+    Column(Modifier.padding(24.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Enable GPS")
             Spacer(Modifier.width(16.dp))
             Switch(checked = gpsEnabled, onCheckedChange = onToggleGps)
